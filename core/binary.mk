@@ -249,7 +249,7 @@ ifndef LOCAL_IS_HOST_MODULE
 # For device libraries, move LOCAL_LDLIBS references to my_shared_libraries. We
 # no longer need to use my_ldlibs to pick up NDK prebuilt libraries since we're
 # linking my_shared_libraries by full path now.
-my_allowed_ldlibs :=
+my_allowed_ldlibs := $(LOCAL_ALLOWED_LDLIBS)
 
 # Sort ldlibs and ldflags between -l and other linker flags
 # We'll do this again later, since there are still changes happening, but that's fine.
@@ -1748,7 +1748,7 @@ my_ldlibs := $(filter -l%,$(my_ldlib_flags))
 my_ldflags := $(filter-out -l%,$(my_ldlib_flags))
 
 # One last verification check for ldlibs
-my_allowed_ldlibs :=
+my_allowed_ldlibs := $(LOCAL_ALLOWED_LDLIBS)
 ifndef LOCAL_IS_HOST_MODULE
   ifneq ($(LOCAL_SDK_VERSION),)
     my_allowed_ldlibs := $(addprefix -l,$(NDK_PREBUILT_SHARED_LIBRARIES))
