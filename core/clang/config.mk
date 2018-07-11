@@ -65,6 +65,11 @@ CLANG_CONFIG_EXTRA_CFLAGS += \
   -fcolor-diagnostics
 endif
 
+# Disable some new warnings in Clang 6.0
+CLANG_CONFIG_EXTRA_CFLAGS += $(if $(strip $(wildcard \
+       $(LLVM_PREBUILTS_PATH)/../lib64/clang/6.0.*)), \
+  -Wno-tautological-constant-compare)
+
 CLANG_CONFIG_UNKNOWN_CFLAGS := \
   -finline-functions \
   -finline-limit=64 \
