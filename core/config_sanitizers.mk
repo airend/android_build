@@ -159,3 +159,14 @@ ifneq ($(strip $(LOCAL_SANITIZE_RECOVER)),)
   recover_arg := $(subst $(space),$(comma),$(LOCAL_SANITIZE_RECOVER)),
   my_cflags += -fsanitize-recover=$(recover_arg)
 endif
+
+# http://b/119329758, Android core does not boot up with this sanitizer yet.
+# Previously sanitized modules might not pass new implicit-integer-sign-change check.
+# Disable this check unless it has been explicitly specified.
+ifneq ($(findstring fsanitize,$(my_cflags)),)
+  ifneq ($(findstring integer,$(my_cflags)),)
+    ifeq ($(findstring sanitize=implicit-integer-sign-change,$(my_cflags)),)
+      my_cflags += -fno-sanitize=implicit-integer-sign-change
+    endif
+  endif
+endif
